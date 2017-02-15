@@ -52,7 +52,7 @@ if req.status_code == 200:
       # 前回の最終時刻より後のツイートを表示
       if jst_time > last_time:
         # ツイート本文
-        text = '@'+user_name+' そうじゃないよ!'
+        text = '@'+user_name+' !'
         params = { "status": text, "in_reply_to_status_id": id_str}    
         tweet(params)
         print(text)
