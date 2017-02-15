@@ -53,7 +53,7 @@ def run():
         # 前回の最終時刻より後のツイートを表示
         if jst_time > last_time:
           # ツイート本文
-          text = '@'+user_name+' !'
+          text = '@'+user_name+u' そうじゃないよ!'
           params = { "status": text, "in_reply_to_status_id": id_str}    
           tweet(params)
           print(text)
