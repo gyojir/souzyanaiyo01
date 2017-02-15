@@ -40,11 +40,11 @@ else:
 
 # レスポンスを確認
 if req.status_code == 200:
-#    print ("OK")
+    print ("OK")
 
     most_lated_time = last_time;
     for r in req.json():
-#      text = r['text']
+      text = r['text']
       user_name = r['user']['screen_name']
       id_str = r['id_str']
       utc_string = r['created_at']
@@ -55,14 +55,14 @@ if req.status_code == 200:
         text = '@'+user_name+' そうじゃないよ!'
         params = { "status": text, "in_reply_to_status_id": id_str}    
         tweet(params)
-#        print(text)
-#        print(jst_time)
+        print(text)
+        print(jst_time)
       # 一番最後のツイートの時間を記録
       if jst_time > most_lated_time:
         most_lated_time = jst_time
 
 else:
-#    print ("Error: %d" % req.status_code)
+    print ("Error: %d" % req.status_code)
 
 
 f = open('time.txt', 'w')
