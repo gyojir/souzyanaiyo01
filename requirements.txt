@@ -1,3 +1,5 @@
+gunicorn
+Flask
 appdirs==1.4.0
 bottle==0.12.13
 oauthlib==2.0.1
