@@ -36,7 +36,7 @@ def run():
   cursor.execute('select dt from time where id=0')
   records = cursor.fetchall()
   last_time = records[0][0].replace(tzinfo=timezone('Asia/Tokyo'))
-  print 'last time = ' + last_time
+  print last_time
 
   req = mentions()
 
@@ -55,6 +55,7 @@ def run():
         if jst_time > last_time:
           # ツイート本文
           text = '@'+user_name+u' そうじゃないよ!'
+          text = text.encode('utf-8')
           params = { "status": text, "in_reply_to_status_id": id_str}    
           tweet(params)
           print(text)
