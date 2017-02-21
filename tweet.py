@@ -66,17 +66,17 @@ def run():
   else:
       print ("Error: %d" % req.status_code)
 
-try:
-  cursor.execute('update time set dt="'+most_lated_time.strftime('%Y-%m-%d %H:%M:%S')+'" where id=0')
-  cursor.execute('select * from time')
-  connector.commit()
-  records = cursor.fetchall()
-  for record in records:
-    print record
-  print 'Complete!'
-except Exception as e:
-  connector.rollback()
-  raise e
-finally:
-  cursor.close()
-  connector.close()
+  try:
+    cursor.execute('update time set dt="'+most_lated_time.strftime('%Y-%m-%d %H:%M:%S')+'" where id=0')
+    cursor.execute('select * from time')
+    connector.commit()
+    records = cursor.fetchall()
+    for record in records:
+      print record
+    print 'Complete!'
+  except Exception as e:
+    connector.rollback()
+    raise e
+  finally:
+    cursor.close()
+    connector.close()
