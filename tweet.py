@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import MySQLdb
 from requests_oauthlib import OAuth1Session
 from dateutil import parser
 from pytz import timezone
@@ -28,16 +29,16 @@ def mentions():
 
 def run():
 
+  connector = MySQLdb.connect(host="localhost", db="test", user="root", passwd="G7cFM6TLzPX3DZ7", charset="utf8")
+  connector.autocommit(False)
+  cursor = connector.cursor()
+
+  cursor.execute('select dt from time where id=0')
+  records = cursor.fetchall()
+  last_time = records[0][0].replace(tzinfo=timezone('Asia/Tokyo'))
+  print 'last time = ' + last_time
+
   req = mentions()
-
-  f = open('time.txt', 'r')
-  last_time_str = f.read()
-  f.close()
-
-  if last_time_str == '':
-    last_time = datetime(1,1,1,tzinfo=timezone('Asia/Tokyo'))
-  else:
-    last_time = parser.parse(last_time_str)
 
   # レスポンスを確認
   if req.status_code == 200:
@@ -65,7 +66,17 @@ def run():
   else:
       print ("Error: %d" % req.status_code)
 
-
-  f = open('time.txt', 'w')
-  f.write(str(most_lated_time))
-  f.close()
+try:
+  cursor.execute('update time set dt="'+most_lated_time.strftime('%Y-%m-%d %H:%M:%S')+'" where id=0')
+  cursor.execute('select * from time')
+  connector.commit()
+  records = cursor.fetchall()
+  for record in records:
+    print record
+  print 'Complete!'
+except Exception as e:
+  connector.rollback()
+  raise e
+finally:
+  cursor.close()
+  connector.close()
