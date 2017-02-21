@@ -13,16 +13,12 @@ CS = os.environ["CONSUMER_SECRET"]                          # Consumer Secret
 AT = os.environ["ACCESS_TOKEN_KEY"] # Access Token
 AS = os.environ["ACCESS_TOKEN_SECRET"]        # Accesss Token Secert
 
-# OAuth認証で POST method で投稿
-twitter = OAuth1Session(CK, CS, AT, AS)
-
-def tweet(params):
+def tweet(twitter,params):
   # ツイート投稿用のURL
   url = "https://api.twitter.com/1.1/statuses/update.json"
   req = twitter.post(url, params = params)
 
-def mentions():
-  # ツイート投稿用のURL
+def mentions(twitter):
   url = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
   params = {"count": "20"}
   return twitter.get(url, params = params)
@@ -38,7 +34,10 @@ def run():
   last_time = records[0][0].replace(tzinfo=timezone('Asia/Tokyo'))
   print last_time
 
-  req = mentions()
+  # OAuth認証で POST method で投稿
+  twitter = OAuth1Session(CK, CS, AT, AS)
+
+  req = mentions(twitter)
 
   # レスポンスを確認
   if req.status_code == 200:
@@ -57,7 +56,7 @@ def run():
           text = '@'+user_name+u' そうじゃないよ!'
           text = text.encode('utf-8')
           params = { "status": text, "in_reply_to_status_id": id_str}    
-          tweet(params)
+          tweet(twitter,params)
           print(text)
           print(jst_time)
         # 一番最後のツイートの時間を記録
