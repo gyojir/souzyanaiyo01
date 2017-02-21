@@ -29,7 +29,7 @@ def mentions():
 
 def run():
 
-  connector = MySQLdb.connect(host="localhost", db="test", user="root", passwd="G7cFM6TLzPX3DZ7", charset="utf8")
+  connector = MySQLdb.connect(host=os.environ["MYSQL_SERVICE_HOST"], db=os.environ["MYSQL_DATABASE"], user=os.environ["MYSQL_USER"], passwd=os.environ["MYSQL_PASSWORD"], charset="utf8")
   connector.autocommit(False)
   cursor = connector.cursor()
 
