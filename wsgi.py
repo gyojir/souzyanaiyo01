@@ -9,5 +9,10 @@ def hello():
     tweet.run()
     return "Hello World!"
 
+@application.route("/rand")
+def hello():
+    tweet.random_tweet()
+    return "souzyanaiyo!"
+
 if __name__ == "__main__":
     application.run()
