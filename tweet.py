@@ -85,3 +85,22 @@ def run():
   finally:
     cursor.close()
     connector.close()
+
+def random_tweet():
+  connector = MySQLdb.connect(host=os.environ["MYSQL_SERVICE_HOST"], db=os.environ["MYSQL_DATABASE"], user=os.environ["MYSQL_USER"], passwd=os.environ["MYSQL_PASSWORD"], charset="utf8")
+  connector.autocommit(False)
+  cursor = connector.cursor()
+
+  cursor.execute('select word from words order by rand() limit 1')
+  records = cursor.fetchall()
+
+  if records:
+    last_time = records[0][0]
+    text = text.encode('utf-8')
+  else:
+    return
+  print text
+
+  # ツイート本文
+  params = {"status": text}  
+  tweet(params)
