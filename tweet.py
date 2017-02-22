@@ -8,25 +8,26 @@ from dateutil import parser
 from pytz import timezone
 from datetime import datetime
 
-def tweet(twitter,params):
+CK = os.environ["CONSUMER_KEY"]                            # Consumer Key
+CS = os.environ["CONSUMER_SECRET"]                          # Consumer Secret
+AT = os.environ["ACCESS_TOKEN_KEY"] # Access Token
+AS = os.environ["ACCESS_TOKEN_SECRET"]        # Accesss Token Secert
+
+# OAuth認証で POST method で投稿
+twitter = OAuth1Session(CK, CS, AT, AS)
+
+def tweet(params):
   # ツイート投稿用のURL
   url = "https://api.twitter.com/1.1/statuses/update.json"
   req = twitter.post(url, params = params)
 
-def mentions(twitter):
+def mentions():
+  # ツイート投稿用のURL
   url = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
   params = {"count": "20"}
   return twitter.get(url, params = params)
 
 def run():
-
-  CK = os.environ["CONSUMER_KEY"]               # Consumer Key
-  CS = os.environ["CONSUMER_SECRET"]            # Consumer Secret
-  AT = os.environ["ACCESS_TOKEN_KEY"]           # Access Token
-  AS = os.environ["ACCESS_TOKEN_SECRET"]        # Accesss Token Secert
-
-  # OAuth認証で POST method で投稿
-  twitter = OAuth1Session(CK, CS, AT, AS)
 
   connector = MySQLdb.connect(host=os.environ["MYSQL_SERVICE_HOST"], db=os.environ["MYSQL_DATABASE"], user=os.environ["MYSQL_USER"], passwd=os.environ["MYSQL_PASSWORD"], charset="utf8")
   connector.autocommit(False)
@@ -37,8 +38,7 @@ def run():
   last_time = records[0][0].replace(tzinfo=timezone('Asia/Tokyo'))
   print last_time
 
-
-  req = mentions(twitter)
+  req = mentions()
 
   # レスポンスを確認
   if req.status_code == 200:
@@ -57,7 +57,7 @@ def run():
           text = '@'+user_name+u' そうじゃないよ!'
           text = text.encode('utf-8')
           params = { "status": text, "in_reply_to_status_id": id_str}    
-          tweet(twitter,params)
+          tweet(params)
           print(text)
           print(jst_time)
         # 一番最後のツイートの時間を記録
@@ -81,5 +81,3 @@ def run():
   finally:
     cursor.close()
     connector.close()
-
-  return "OK"
