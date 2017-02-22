@@ -10,7 +10,7 @@ def hello():
     return "Hello World!"
 
 @application.route("/rand")
-def hello():
+def rand():
     tweet.random_tweet()
     return "souzyanaiyo!"
 
