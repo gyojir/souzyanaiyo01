@@ -81,3 +81,5 @@ def run():
   finally:
     cursor.close()
     connector.close()
+
+  return "OK"
