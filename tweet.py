@@ -35,7 +35,11 @@ def run():
 
   cursor.execute('select dt from time where id=0')
   records = cursor.fetchall()
-  last_time = records[0][0].replace(tzinfo=timezone('Asia/Tokyo'))
+
+  if records:
+    last_time = records[0][0].replace(tzinfo=timezone('Asia/Tokyo'))
+  else:
+    last_time = datetime(2017,1,1,tzinfo=timezone('Asia/Tokyo'))
   print last_time
 
   req = mentions()
