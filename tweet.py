@@ -95,8 +95,7 @@ def random_tweet():
   records = cursor.fetchall()
 
   if records:
-    last_time = records[0][0]
-    text = text.encode('utf-8')
+    text = records[0][0].encode('utf-8')
   else:
     return
   print text
