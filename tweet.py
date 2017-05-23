@@ -99,6 +99,7 @@ def random_tweet():
     print type(text)
     print text
     print text.encode('utf-8')
+    text = text.encode('utf-8')
   else:
     return
 
