@@ -95,10 +95,12 @@ def random_tweet():
   records = cursor.fetchall()
 
   if records:
-    text = records[0][0].encode('utf-8')
+    text = records[0][0]
+    print type(text)
+    print text
+    print text.encode('utf-8')
   else:
     return
-  print text
 
   # ツイート本文
   params = {"status": text}  
