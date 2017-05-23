@@ -91,7 +91,7 @@ def random_tweet():
   connector.autocommit(False)
   cursor = connector.cursor()
 
-  cursor.execute('select word from words order by rand() limit 1')
+  cursor.execute('select hex(word) from words order by rand() limit 1')
   records = cursor.fetchall()
 
   if records:
