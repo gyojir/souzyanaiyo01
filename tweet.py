@@ -91,15 +91,12 @@ def random_tweet():
   connector.autocommit(False)
   cursor = connector.cursor()
 
-  cursor.execute('select hex(word) from words order by rand() limit 1')
+  cursor.execute('select unhex(hex(word)) from words order by rand() limit 1')
   records = cursor.fetchall()
 
   if records:
-    text = records[0][0]
-    print type(text)
+    text = records[0][0].decode('utf-8')
     print text
-    print text.encode('utf-8')
-    text = text.encode('utf-8')
   else:
     return
 
